@@ -171,12 +171,12 @@
                             </div>
                             <div
                                 class="col-xl-5 col-lg-12 col-sm-5 text-center text-sm-end text-lg-start text-xl-end xs-mt-25px">
-                                <input type="hidden" name="redirect" value="https://web3forms.com/success">
+                                
                                 <button class="btn btn-dark-gray btn-medium btn-round-edge btn-box-shadow submit"
                                     type="submit">Send message</button>
                             </div>
                             <div class="col-12 mt-20px mb-0 text-center text-md-start">
-                                <div class="form-results d-none"></div>
+                                <div class="form-results text-success text-center fw-bold mt-3 d-none">Message sent successfully!</div>
                             </div>
                         </div>
                     </form>
@@ -251,7 +251,7 @@
                 <!-- start copyright -->
                 <div
                     class="col-lg-5 pt-20px pb-20px md-pt-0 order-2 order-lg-1 text-center text-lg-start last-paragraph-no-margin fs-14">
-                    <p>&copy; <script>document.write(new Date().getFullYear())</script> AAVSI Systems Inc.</p>
+                    <p>&copy; <script>document.write(new Date().getFullYear())</script> AVSI Systems Inc.</p>
                 </div>
                 <!-- end copyright -->
                 <!-- start footer menu -->
@@ -275,6 +275,27 @@
     </div>
     <!-- end scroll progress -->
     <!-- javascript libraries -->
+
+    <script>
+  document.querySelector(".contact-form-style-03").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const form = this;
+    fetch(form.action, {
+      method: "POST",
+      body: new FormData(form),
+    }).then(response => {
+      if (response.ok) {
+        form.reset();
+        form.querySelector(".form-results").classList.remove("d-none");
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    }).catch(error => {
+      alert("Submission failed. Please check your internet connection.");
+    });
+  });
+</script>
+
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/vendors.min.js"></script>
     <script async defer
