@@ -139,7 +139,7 @@
                     data-anime='{ "el": "childs", "translateX": [50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'>
                     <h3 class="text-dark-gray ls-minus-2px fw-700">Got a Project in mind?</h3>
                     <form action="https://api.web3forms.com/submit" method="post" class="contact-form-style-03">
-                        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+                        <input type="hidden" name="access_key" value="52dc869f-825e-4d1f-9419-ef77852884ca">
                         <label for="exampleInputEmail1"
                             class="form-label fs-13 text-uppercase text-dark-gray fw-700 mb-0">Name</label>
                         <div class="position-relative form-group mb-20px">
@@ -169,6 +169,7 @@
                                 <p class="mb-0 fs-14 lh-22 text-center text-sm-start">We will never collect information
                                     about you without your explicit consent.</p>
                             </div>
+                             <input type="hidden" name="redirect" value="https://web3forms.com/success">
                             <div
                                 class="col-xl-5 col-lg-12 col-sm-5 text-center text-sm-end text-lg-start text-xl-end xs-mt-25px">
                                 
@@ -276,30 +277,9 @@
     <!-- end scroll progress -->
     <!-- javascript libraries -->
 
-    <script>
-  document.querySelector(".contact-form-style-03").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const form = this;
-    fetch(form.action, {
-      method: "POST",
-      body: new FormData(form),
-    }).then(response => {
-      if (response.ok) {
-        form.reset();
-        form.querySelector(".form-results").classList.remove("d-none");
-      } else {
-        alert("Something went wrong. Please try again.");
-      }
-    }).catch(error => {
-      alert("Submission failed. Please check your internet connection.");
-    });
-  });
-</script>
 
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/vendors.min.js"></script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA56KqSJ11nQUw_tXgXyNMiPmQeM7EaSA&callback=initMap"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 
