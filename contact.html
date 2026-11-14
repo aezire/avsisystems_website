@@ -312,71 +312,99 @@
     <script type="text/javascript" src="js/main.js"></script>
 
     <script>
-        let submitted = false;
+    let submitted = false;
 
-        function formSubmitted() {
-            if (submitted) {
-                // document.getElementById("formResult").classList.remove("d-none");
-                document.getElementById("submitBtn").innerText = "Message Sent!";
+    // Function to check if all requirements are met
+    function validateForm() {
+        const name = document.getElementById("exampleInputEmail1").value.trim();
+        const email = document.getElementById("exampleInputEmail2").value.trim();
+        const phone = document.getElementById("exampleInputEmail3").value.trim();
+        const message = document.querySelector('textarea[name="message"]').value.trim();
+        const consent = document.getElementById("consent").checked;
+
+        // Basic regex for email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Check all conditions
+        const isNameValid = name.length > 0;
+        const isEmailValid = emailRegex.test(email);
+        const isPhoneValid = phone.length > 0;
+        const isMessageValid = message.length > 0;
+        const isConsentChecked = consent === true;
+
+        const submitBtn = document.getElementById("submitBtn");
+
+        // Enable/Disable button based on validation
+        if (isNameValid && isEmailValid && isPhoneValid && isMessageValid && isConsentChecked) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = "1"; // Ensure it looks active
+            submitBtn.style.cursor = "pointer";
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.5"; // Make it look disabled
+            submitBtn.style.cursor = "not-allowed";
+        }
+    }
+
+    // Listen for any input changes in the form to run validation in real-time
+    const form = document.getElementById('contactForm');
+    form.addEventListener('input', validateForm);
+    form.addEventListener('change', validateForm);
+
+    // Run validation once on page load (in case fields are pre-filled)
+    window.onload = validateForm;
+
+    function formSubmitted() {
+        if (submitted) {
+            document.getElementById("submitBtn").innerText = "Message Sent!";
+        }
+    }
+
+    function manualSubmit() {
+        console.log("Manual submit triggered - bypassing jQuery.");
+        submitted = true;
+        
+        const btn = document.getElementById("submitBtn");
+        btn.disabled = true;
+        btn.innerText = "Sending...";
+
+        const originalForm = document.getElementById('contactForm');
+        
+        const tempForm = document.createElement('form');
+        tempForm.setAttribute('method', 'POST');
+        tempForm.setAttribute('action', 'https://api.web3forms.com/submit');
+        tempForm.setAttribute('target', 'hidden_iframe');
+
+        const inputs = originalForm.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            if (input.type !== 'checkbox' && input.type !== 'button' && input.type !== 'hidden') {
+                const newInput = document.createElement(input.tagName);
+                Array.from(input.attributes).forEach(attr => {
+                    newInput.setAttribute(attr.name, attr.value);
+                });
+                newInput.value = input.value;
+                tempForm.appendChild(newInput);
             }
-        }
+        });
 
-        function manualSubmit() {
-            console.log("Manual submit triggered - bypassing jQuery.");
-            submitted = true;
+        const accessKey = originalForm.querySelector('input[name="access_key"]').value;
+        const keyInput = document.createElement('input');
+        keyInput.type = 'hidden';
+        keyInput.name = 'access_key';
+        keyInput.value = accessKey;
+        tempForm.appendChild(keyInput);
 
-            const btn = document.getElementById("submitBtn");
-            btn.disabled = true;
-            btn.innerText = "Sending...";
+        document.body.appendChild(tempForm);
+        tempForm.submit();
 
-            const originalForm = document.getElementById('contactForm');
+        setTimeout(() => {
+            if (document.body.contains(tempForm)) {
+                document.body.removeChild(tempForm);
+            }
+        }, 1000);
+    }
+</script>
 
-            // Create a temporary form
-            const tempForm = document.createElement('form');
-            tempForm.setAttribute('method', 'POST');
-            tempForm.setAttribute('action', 'https://api.web3forms.com/submit');
-            tempForm.setAttribute('target', 'hidden_iframe');
-
-            // Copy all inputs from the original form
-            const inputs = originalForm.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                // Skip checkboxes for now to ensure they don't cause issues, 
-                // but keep the others (Name, Email, Phone, Message)
-                if (input.type !== 'checkbox' && input.type !== 'button' && input.type !== 'hidden') {
-                    const newInput = document.createElement(input.tagName);
-
-                    // Copy all attributes (name, type, placeholder, required, etc.)
-                    Array.from(input.attributes).forEach(attr => {
-                        newInput.setAttribute(attr.name, attr.value);
-                    });
-
-                    // Ensure the current value is set
-                    newInput.value = input.value;
-
-                    tempForm.appendChild(newInput);
-                }
-            });
-
-            // Explicitly add the access key (This is crucial for Web3Forms)
-            const accessKey = originalForm.querySelector('input[name="access_key"]').value;
-            const keyInput = document.createElement('input');
-            keyInput.type = 'hidden';
-            keyInput.name = 'access_key';
-            keyInput.value = accessKey;
-            tempForm.appendChild(keyInput);
-
-            // Append to body and submit
-            document.body.appendChild(tempForm);
-            tempForm.submit();
-
-            // Cleanup
-            setTimeout(() => {
-                if (document.body.contains(tempForm)) {
-                    document.body.removeChild(tempForm);
-                }
-            }, 1000);
-        }
-    </script>
 
 </body>
 
