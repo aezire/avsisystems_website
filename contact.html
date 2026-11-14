@@ -130,7 +130,8 @@
                             </div>
                             <div class="col last-paragraph-no-margin">
                                 <p>India Office</p>
-                                <a class="text-dark-gray fw-600">Office #301, 3rd Floor, B-33 Sector 63, Noida UP, 201301</a>
+                                <a class="text-dark-gray fw-600">Office #301, 3rd Floor, B-33 Sector 63, Noida UP,
+                                    201301</a>
                             </div>
                         </div>
                     </div>
@@ -140,6 +141,7 @@
                     <h3 class="text-dark-gray ls-minus-2px fw-700">Got a Project in mind?</h3>
                     <form id="contactForm" action="https://api.web3forms.com/submit" method="POST"
                         class="contact-form-style-03">
+
                         <input type="hidden" name="access_key" value="52dc869f-825e-4d1f-9419-ef77852884ca">
                         <label for="exampleInputEmail1"
                             class="form-label fs-13 text-uppercase text-dark-gray fw-700 mb-0">Name</label>
@@ -156,7 +158,8 @@
                             <span class="form-icon"><i class="bi bi-envelope text-dark-gray"></i></span>
                             <input
                                 class="fs-15 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
-                                id="exampleInputEmail2" type="email" name="email" placeholder="Enter your email address" required />
+                                id="exampleInputEmail2" type="email" name="email" placeholder="Enter your email address"
+                                required />
                         </div>
                         <label for="exampleInputEmail3"
                             class="form-label fs-13 text-uppercase text-dark-gray fw-700 mb-0">Phone</label>
@@ -164,7 +167,8 @@
                             <span class="form-icon"><i class="bi bi-phone text-dark-gray"></i></span>
                             <input
                                 class="fs-15 ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
-                                id="exampleInputEmail3" type="tel" name="phone" placeholder="Enter your phone number" required />
+                                id="exampleInputEmail3" type="tel" name="phone" placeholder="Enter your phone number"
+                                required />
                         </div>
                         <label for="exampleInputEmail4"
                             class="form-label fs-13 text-uppercase text-dark-gray fw-700 mb-0">Your message</label>
@@ -179,20 +183,23 @@
                                 <input type="checkbox" id="consent" name="consent" required>
                             </div>
                             <div class="col">
-                                <p class="mb-0 fs-12 lh-18 text-left text-sm-start">By providing your phone number, you agree to receive promotional and informational text messages, such as account updates and security alerts, from AVSI Systems. Message & data rates may apply. We do not sell, share or lease your personal data to any third parties. Message frequency varies. Reply STOP to opt out, reply HELP for help.</p>
+                                <p class="mb-0 fs-12 lh-18 text-left text-sm-start">By providing your phone number, you
+                                    agree to receive promotional and informational text messages, such as account
+                                    updates and security alerts, from AVSI Systems. Message & data rates may apply. We
+                                    do not sell, share or lease your personal data to any third parties. Message
+                                    frequency varies. Reply STOP to opt out, reply HELP for help.</p>
                             </div>
                         </div>
                         <div class="row mt-25px align-items-start">
                             <div class="col-xl-5 col-lg-12 col-sm-5 text-center text-sm-start">
                                 <button id="submitBtn"
                                     class="btn btn-dark-gray btn-medium btn-round-edge btn-box-shadow submit"
-                                    type="submit">Send message</button>
+                                    type="button" onclick="manualSubmit()">Send message</button>
                             </div>
 
 
                             <!-- Success Message -->
-                            <div id="formResult" class="form-results text-success fw-bold mt-3 d-none">Message sent
-                                successfully!</div>
+                            <div id="formResult" class="form-results fw-bold mt-3 d-none">Message Sent</div>
 
                         </div>
                     </form>
@@ -200,24 +207,6 @@
                     <!-- HIDDEN IFRAME (for submission target) -->
                     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
                         onload="formSubmitted()"></iframe>
-
-                    <script>
-                        let submitted = false;
-
-                        function handleSubmit() {
-                            submitted = true;
-                            document.getElementById("submitBtn").disabled = true;
-                            document.getElementById("submitBtn").innerText = "Sending...";
-                            return true; // continue with form submission
-                        }
-
-                        function formSubmitted() {
-                            if (submitted) {
-                                document.getElementById("formResult").classList.remove("d-none");
-                                document.getElementById("submitBtn").innerText = "Sent!";
-                            }
-                        }
-                    </script>
 
                 </div>
             </div>
@@ -276,7 +265,8 @@
                     <span class="d-block mb-10px"><a class="text-dark-gray fw-600" href="tel:1235678901">3600 Route 66,
                             Suite 150, Neptune, NJ 07753</a></span>
                     <span>India Office</span>
-                    <span class="d-block mb-10px"><a class="text-dark-gray fw-600" href="tel:1235678901">Office #301, 3rd Floor, B-33 Sector 63, Noida UP, 201301</a></span>
+                    <span class="d-block mb-10px"><a class="text-dark-gray fw-600" href="tel:1235678901">Office #301,
+                            3rd Floor, B-33 Sector 63, Noida UP, 201301</a></span>
                 </div>
                 <!-- end footer column -->
             </div>
@@ -320,6 +310,74 @@
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/vendors.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+
+    <script>
+        let submitted = false;
+
+        function formSubmitted() {
+            if (submitted) {
+                // document.getElementById("formResult").classList.remove("d-none");
+                document.getElementById("submitBtn").innerText = "Message Sent!";
+            }
+        }
+
+        function manualSubmit() {
+            console.log("Manual submit triggered - bypassing jQuery.");
+            submitted = true;
+
+            const btn = document.getElementById("submitBtn");
+            btn.disabled = true;
+            btn.innerText = "Sending...";
+
+            const originalForm = document.getElementById('contactForm');
+
+            // Create a temporary form
+            const tempForm = document.createElement('form');
+            tempForm.setAttribute('method', 'POST');
+            tempForm.setAttribute('action', 'https://api.web3forms.com/submit');
+            tempForm.setAttribute('target', 'hidden_iframe');
+
+            // Copy all inputs from the original form
+            const inputs = originalForm.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                // Skip checkboxes for now to ensure they don't cause issues, 
+                // but keep the others (Name, Email, Phone, Message)
+                if (input.type !== 'checkbox' && input.type !== 'button' && input.type !== 'hidden') {
+                    const newInput = document.createElement(input.tagName);
+
+                    // Copy all attributes (name, type, placeholder, required, etc.)
+                    Array.from(input.attributes).forEach(attr => {
+                        newInput.setAttribute(attr.name, attr.value);
+                    });
+
+                    // Ensure the current value is set
+                    newInput.value = input.value;
+
+                    tempForm.appendChild(newInput);
+                }
+            });
+
+            // Explicitly add the access key (This is crucial for Web3Forms)
+            const accessKey = originalForm.querySelector('input[name="access_key"]').value;
+            const keyInput = document.createElement('input');
+            keyInput.type = 'hidden';
+            keyInput.name = 'access_key';
+            keyInput.value = accessKey;
+            tempForm.appendChild(keyInput);
+
+            // Append to body and submit
+            document.body.appendChild(tempForm);
+            tempForm.submit();
+
+            // Cleanup
+            setTimeout(() => {
+                if (document.body.contains(tempForm)) {
+                    document.body.removeChild(tempForm);
+                }
+            }, 1000);
+        }
+    </script>
+
 </body>
 
 </html>
